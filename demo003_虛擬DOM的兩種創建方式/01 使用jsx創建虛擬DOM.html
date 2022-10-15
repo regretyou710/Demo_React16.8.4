@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        //1.創建虛擬DOM
+        //可以用括弧代表虛擬DOM的值是一個整體
+		const VDOM = ( /* 此處一定不要寫引號，因為不是字符串 */
+            <h1 id='title'>
+                <span>Hello,React</span>
+            </h1>
+        )
+        
+            //2.渲染虛擬DOM到頁面
+        ReactDOM.render(VDOM,document.getElementById('test'))        
+    </script>
+</body>
+
+</html>

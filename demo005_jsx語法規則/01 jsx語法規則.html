@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jsx語法規則</title>
+    <style>
+        .title {
+            background-color: orange;
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        const myId = 'aTgUiGu'
+		const myData = 'HeLlo,rEaCt'
+
+		//1.創建虛擬DOM
+		const VDOM = (
+			<div>
+				<h2 className="title" id={myId.toLowerCase()}>
+					<span style={{color:'white',fontSize:'29px'}}>{myData.toLowerCase()}</span>
+				</h2>
+				<h2 className="title" id={myId.toUpperCase()}>
+					<span style={{color:'white',fontSize:'29px'}}>{myData.toLowerCase()}</span>
+				</h2>
+				<input type="text"/>
+			</div>
+		)
+		//2.渲染虛擬DOM到頁面
+		ReactDOM.render(VDOM,document.getElementById('test'))
+
+		/* 
+				jsx語法規則：
+						1.定義虛擬DOM時，不要寫引號。
+						2.標簽中混入JS表達式時要用{}。
+						3.樣式的類名指定不要用class，要用className。
+						4.內聯樣式，要用style={{key:value}}的形式去寫。
+						5.只有一個根標簽
+						6.標簽必須閉合
+						7.標簽首字母
+								(1).若小寫字母開頭，則將該標簽轉為html中同名元素，若html中無該標簽對應的同名元素，則報錯。
+								(2).若大寫字母開頭，react就去渲染對應的組件，若組件沒有定義，則報錯。
+
+		 */
+	</script>
+</body>
+
+</html>
