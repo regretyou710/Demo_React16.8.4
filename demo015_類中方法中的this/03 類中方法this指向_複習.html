@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      class Person {
+        constructor(name, age) {
+          this.name = name;
+          this.age = age;
+        }
+        study() {
+          //study方法放在了哪里？——類的原型對象上，供實例使用
+          //通過Person實例調用study時，study中的this就是Person實例
+          console.log(this);
+        }
+      }
+
+      const p1 = new Person("tom", 18);
+      p1.study(); //通過實例調用study方法;Person類身上沒有study方法(因為放在原型上)，所以順著原型鏈找到原型身上的study方法
+      const x = p1.study; //將p1實例在其原型找到的study方法賦值給x
+      x(); //x "直接" 調用，而不是透過x實例調用;而為什麼調用結果是undefined，是因為class中定義方法都會開啟局部嚴格模式，與babel無關，所以this不會指向window
+    </script>
+  </body>
+</html>

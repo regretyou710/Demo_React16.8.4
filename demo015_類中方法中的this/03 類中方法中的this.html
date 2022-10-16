@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //1.創建組件
+      class Weather extends React.Component {
+        constructor(props) {
+          super(props);
+
+          //初始化狀態
+          this.state = { isHot: false };
+        }
+
+        render() {
+          //讀取狀態
+          const { isHot } = this.state; //對象解構賦值
+
+          return (
+            //在class裡，方法調用另一個方法要使用this.xxx否則會出現找不到方法的錯誤
+            // <h1 onClick={changeWeather}>今天天氣很{isHot ? "炎熱" : "涼爽"}</h1>
+
+            /**
+             *<h1 onClick={this.changeWeather}>今天天氣很{isHot ? "炎熱" : "涼爽"}</h1>
+             *相當於
+             *<h1 onClick={function changeWeather() {console.log(this);}}>今天天氣很{isHot ? "炎熱" : "涼爽"}</h1>
+             *<h1 onClick={function() {console.log(this);}}>今天天氣很{isHot ? "炎熱" : "涼爽"}</h1>
+             */
+            <h1 onClick={this.changeWeather}>
+              今天天氣很{isHot ? "炎熱" : "涼爽"}
+            </h1>
+          );
+        }
+
+        changeWeather() {
+          //changeWeather是放在哪里的？—— Weather的原型對象上，供實例使用。
+          //由於changeWeather是作為onClick的回調，所以不是通過實例調用的，是直接調用
+          //類中的方法默認開啟了局部的嚴格模式，所以changeWeather中的this為undefined
+          console.log(this);
+        }
+      }
+
+      //2.渲染組件到頁面
+      ReactDOM.render(<Weather />, test);
+    </script>
+  </body>
+</html>

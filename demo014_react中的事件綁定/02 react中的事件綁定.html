@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //1.創建組件
+      class Weather extends React.Component {
+        constructor(props) {
+          super(props);
+
+          //初始化狀態
+          this.state = { isHot: false };
+        }
+
+        render() {
+          console.log(this);
+          //讀取狀態
+          const { isHot } = this.state; //對象解構賦值
+
+          //因為發現組件是使用類定義的，隨後new出來該類的實例，並通過該實例調用到原型上的render方法
+          //所以return的內容會被執行，若onClick={demo()}，則會在頁面渲染完畢後執行demo函數
+          //此時再點擊標題不會有效果因為是以undefine作為onClick的回調 => onClick={undefined}
+          return <h1 onClick={demo}>今天天氣很{isHot ? "炎熱" : "涼爽"}</h1>;
+        }
+      }
+
+      //2.渲染組件到頁面
+      ReactDOM.render(<Weather />, test);
+
+      function demo() {
+        console.log("標題被點擊了");
+      }
+    </script>
+  </body>
+</html>
