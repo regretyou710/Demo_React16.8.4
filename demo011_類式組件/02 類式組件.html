@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2_類式組件</title>
+</head>
+<body>
+	<!-- 準備好一個“容器” -->
+	<div id="test"></div>
+	
+	<!-- 引入react核心庫 -->
+	<script type="text/javascript" src="../js/react.development.js"></script>
+	<!-- 引入react-dom，用於支持react操作DOM -->
+	<script type="text/javascript" src="../js/react-dom.development.js"></script>
+	<!-- 引入babel，用於將jsx轉為js -->
+	<script type="text/javascript" src="../js/babel.min.js"></script>
+
+	<script type="text/babel">
+		//1.創建類式組件
+		class MyComponent extends React.Component {
+			render(){
+				//render是放在哪里的？—— MyComponent的原型對象上，供實例使用。
+				//render中的this是誰？—— MyComponent的實例對象 <=> MyComponent組件實例對象。
+				console.log('render中的this:',this);
+				return <h2>我是用類定義的組件(適用於【覆雜組件】的定義)</h2>
+			}
+		}
+		//2.渲染組件到頁面
+		ReactDOM.render(<MyComponent/>,document.getElementById('test'))
+		/* 
+			執行了ReactDOM.render(<MyComponent/>.......之後，發生了什麼？
+					1.React解析組件標簽，找到了MyComponent組件。
+					2.發現組件是使用類定義的，隨後new出來該類的實例，並通過該實例調用到原型上的render方法。
+					3.將render返回的虛擬DOM轉為真實DOM，隨後呈現在頁面中。
+		*/
+
+		const myComponent = new MyComponent()
+		console.log(myComponent.__proto__)//瀏覽器解析器會在實例對象中添加__proto__隱含屬性
+		console.log(MyComponent.prototype)//瀏覽器解析器會在構造方法中添加prototype隱含屬性
+		console.log(MyComponent.prototype === myComponent.__proto__)//true		
+	</script>
+</body>
+</html>
