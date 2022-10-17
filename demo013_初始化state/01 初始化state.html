@@ -29,14 +29,14 @@
 
         render() {
           console.log(this);
-          const { isHot } = this.state.isHot;//對象解構賦值
-          
+          const { isHot } = this.state.isHot; //對象解構賦值
+
           return <h1>今天天氣很{isHot ? "炎熱" : "涼爽"}</h1>;
         }
       }
 
       //2.渲染組件到頁面
-      ReactDOM.render(<Weather />, test);
+      ReactDOM.render(<Weather />, document.getElementById("test"));
     </script>
   </body>
 </html>
