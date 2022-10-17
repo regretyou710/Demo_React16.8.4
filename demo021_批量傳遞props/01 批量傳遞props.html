@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test1"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //創建組件
+      class Person extends React.Component {
+        render() {
+          console.log(this);
+          const { name, sex, age } = this.props;
+          return (
+            <ul>
+              <li>姓名:{name}</li>
+              <li>性別:{sex}</li>
+              <li>年齡:{age}</li>
+            </ul>
+          );
+        }
+      }
+
+      //渲染組件到頁面
+      ReactDOM.render(
+        <Person name="John" sex="男" age="20" />,
+        document.getElementById("test1")
+      );
+      ReactDOM.render(
+        <Person name="Tom" sex="男" age="22" />,
+        document.getElementById("test2")
+      );
+
+      const p = { name: "Mary", sex: "女", age: "25" };
+      // ReactDOM.render(
+      //   <Person name={p.name} sex={p.sex} age={p.age} />,
+      //   document.getElementById("test3")
+      // );
+
+      //透過展開運算符傳遞
+      //1.是一種傳遞對象屬性(如上作法)的語法糖
+      //2.要求傳遞對象與接收對象的屬性名必須一致
+      //此處<Person {...p} />中{...p}的花括號不是指對展開運算符包裹的花括號
+      //而是jsx語法規則中JS表達式時要用的花括號
+      //而...p可以在表達式中運行，是因為引入的react.development.js加上babel.min.js後允許對對象使用展開運符
+      ReactDOM.render(<Person {...p} />, document.getElementById("test3"));
+
+      console.log("看一下對對象使用展開運算符", ...p);//在引入react加babel的環境下雖然可以對對象使用展開運算符，但不可隨意使用，僅能在標籤的屬性傳遞使用
+    </script>
+  </body>
+</html>
