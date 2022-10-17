@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //1.創建組件
+      class Weather extends React.Component {
+        // constructor(props) {
+        //   super(props);
+        //   // this.state = { isHot: false, wind: "微風" };
+        //   // this.changeWeather = this.changeWeather.bind(this);
+        // }
+
+        //初始化狀態;給的實例對象添加一個屬性
+        state = { isHot: false, wind: "微風" };
+
+        render() {
+          const { isHot, wind } = this.state;
+          return (
+            <h1 onClick={this.changeWeather}>
+              今天天氣很{isHot ? "炎熱" : "涼爽"}，{wind}
+            </h1>
+          );
+        }
+
+        //changeWeather是放在哪里的？—— Weather的原型對象上，供實例使用
+        // changeWeather() {
+        //   const isHot = this.state.isHot;
+        //   this.setState({ isHot: !isHot });
+        // }
+
+        //自定義方法;給的實例對象添加一個方法(此時就不是放在原型對象上)
+        //方式一:匿名函數賦值
+        //如果state沒有使用bind方法仍會產生this丟失問題(undefined)
+        changeWeather = function () {
+          const isHot = this.state.isHot;
+          this.setState({ isHot: !isHot });
+        };
+
+        //自定義方法;給的實例對象添加一個方法(此時就不是放在原型對象上)
+        //方式二:箭頭函式賦值(特點:沒有自己的this，找其外層的this作為箭頭函式的this)
+        //解決this丟失問題(undefined)
+        changeWeather = () => {
+          const isHot = this.state.isHot;
+          this.setState({ isHot: !isHot });
+        };
+      }
+
+      //2.渲染組件到頁面
+      ReactDOM.render(<Weather />, test);
+    </script>
+  </body>
+</html>
