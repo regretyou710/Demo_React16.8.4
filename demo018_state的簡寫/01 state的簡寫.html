@@ -49,10 +49,10 @@
         //自定義方法;給的實例對象添加一個方法(此時就不是放在原型對象上)
         //方式一:匿名函數賦值
         //如果state沒有使用bind方法仍會產生this丟失問題(undefined)
-        changeWeather = function () {
-          const isHot = this.state.isHot;
-          this.setState({ isHot: !isHot });
-        };
+        // changeWeather = function () {
+        //   const isHot = this.state.isHot;
+        //   this.setState({ isHot: !isHot });
+        // };
 
         //自定義方法;給的實例對象添加一個方法(此時就不是放在原型對象上)
         //方式二:箭頭函式賦值(特點:沒有自己的this，找其外層的this作為箭頭函式的this)
