@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>1_類的基本知識</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      class Car {
+        constructor(name, price) {
+          this.name = name;
+          this.price = price;
+          // this.wheel = 4
+        }
+
+        //類中可以直接寫賦值語句,如下代碼的含義是：給Car的實例對象添加一個屬性，名為a，值為1
+        a = 1;
+        wheel = 4;
+
+        //對類本身添加屬性
+        static demo = 100;
+      }
+
+      const c1 = new Car("奔馳c63", 199);
+      console.log(c1);
+      console.log(Car.demo);
+    </script>
+  </body>
+</html>
