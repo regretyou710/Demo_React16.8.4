@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>3_回調ref中回調執行次數的問題</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //創建組件
+      class Demo extends React.Component {
+        state = { isHot: false };
+
+        showInfo = () => {
+          const { input1 } = this;
+          alert(input1.value);
+        };
+
+        changeWeather = () => {
+          //獲取原來的狀態
+          const { isHot } = this.state;
+          //更新狀態
+          this.setState({ isHot: !isHot });
+        };
+
+        saveInput = (c) => {
+          this.input1 = c;
+          console.log("@", c);
+        };
+
+        render() {
+          const { isHot } = this.state;
+          return (
+            <div>
+              <h2>今天天氣很{isHot ? "炎熱" : "涼爽"}</h2>
+              {
+                /**
+                 * 回調形式的ref(內聯)問題:因為setState方法執行時，狀態得驅動頁面顯示會重新執行render方法，所以下方input標籤中的回調函數會被再執行
+                 * 當頁面第一次渲染後回調形式的ref會被釋放
+                 * 因為不確定在執行setState方法前做了哪些事情，
+                 * 所以React第一次執行ref回調時會傳入null的實參
+                 * 第二次才將當前的節點作為實參傳入
+                 */
+                //<input ref={(c)=>{this.input1 = c;console.log('@',c);}} type="text"/><br/><br/>
+              }
+
+              {/**
+               * 將回調形式的ref放在組件實例對象身上的屬性解決調用次數問題(直接調用)
+               * 說明:因為回調函數放在實例身上，就算狀態改變重新渲染時，React會知道身上已經有調用過這個回調函數就不會被釋放並重新產生新的
+               */}
+              <input ref={this.saveInput} type="text" />
+              <br />
+              <br />
+              <button onClick={this.showInfo}>點我提示輸入的數據</button>
+              <button onClick={this.changeWeather}>點我切換天氣</button>
+            </div>
+          );
+        }
+      }
+      //渲染組件到頁面
+      ReactDOM.render(<Demo />, document.getElementById("test"));
+    </script>
+  </body>
+</html>

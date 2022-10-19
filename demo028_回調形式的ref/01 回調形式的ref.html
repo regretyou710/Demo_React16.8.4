@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>2_回調形式的ref</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //創建組件
+      class Demo extends React.Component {
+        //展示左側輸入框的數據
+        showData = () => {
+          console.log(this); //組件實例對象有input1屬性
+          const { input1 } = this;
+          alert(input1.value);
+        };
+
+        //展示右側輸入框的數據
+        showData2 = () => {
+          const { input2 } = this;
+          alert(input2.value);
+        };
+
+        render() {
+          return (
+            /**
+             * 回調函數滿足的條件
+             * 1. 定義一個函數
+             * 2. 不是透過自己調用
+             * 3. 函數最終執行了
+             *
+             * 特點:函數能接收到什麼實參取決於它的調用者
+             *
+             *
+             * <input ref={(currentNode) => (this.input1 = currentNode)}/>
+             * 說明:
+             * 	1.React解析組件標簽，找到了MyComponent組件。
+             *
+             *	2.發現組件是使用類定義的，React隨後new出來該類的實例，並通過該實例React調用到原型上的render方法。
+             *  調用render的過程會執行jsx，表示{(currentNode) => (this.input1 = currentNode)}會執行jsx
+             *  並且 1. 將當前的所在的節點作為實參傳遞
+             *       2. this.input1 = currentNode表示將所在節點賦值給組件的實例化對象中的input1屬性
+             *          由於箭頭函數自身沒有this，往外找後是在render方法內的this(即組件的實例化對象)
+             *  結論:把ref當前所在的節點賦值給當前的組件實例對象身上的屬性
+             *
+             *	3.將render返回的虛擬DOM轉為真實DOM，隨後呈現在頁面中。
+             */
+
+            <div>
+              <input
+                ref={currentNode => this.input1 = currentNode}
+                type="text"
+                placeholder="點擊按鈕提示數據"
+              />
+              &nbsp;
+              <button onClick={this.showData}>點我提示左側的數據</button>&nbsp;
+              <input
+                ref={currentNode => this.input2 = currentNode}
+                onBlur={this.showData2}
+                type="text"
+                placeholder="失去焦點提示數據"
+              />
+            </div>
+          );
+        }
+      }
+      //渲染組件到頁面
+      ReactDOM.render(<Demo a="1" b="2" />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
