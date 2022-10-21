@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件處理</title>
+</head>
+<body>
+	<!-- 準備好一個“容器” -->
+	<div id="test"></div>
+	
+	<!-- 引入react核心庫 -->
+	<script type="text/javascript" src="../js/react.development.js"></script>
+	<!-- 引入react-dom，用於支持react操作DOM -->
+	<script type="text/javascript" src="../js/react-dom.development.js"></script>
+	<!-- 引入babel，用於將jsx轉為js -->
+	<script type="text/javascript" src="../js/babel.min.js"></script>
+
+	<script type="text/babel">
+		//創建組件
+		class Demo extends React.Component{
+			/* 
+				(1).通過onXxx屬性指定事件處理函數(注意大小寫)
+						a.React使用的是自定義(合成)事件, 而不是使用的原生DOM事件 —————— 為了更好的兼容性
+						b.React中的事件是通過事件委托方式處理的(委托給組件最外層的元素) ————————為了的高效
+				(2).通過event.target得到發生事件的DOM元素對象 ——————————不要過度使用ref
+			 */
+			//創建ref容器
+			myRef = React.createRef()
+			myRef2 = React.createRef()
+
+			//展示左側輸入框的數據
+			showData = (event)=>{
+				console.log(event.target);
+				alert(this.myRef.current.value);
+			}
+
+			//展示右側輸入框的數據
+			showData2 = (event)=>{
+				alert(event.target.value);
+			}
+
+			render(){
+				return(
+					<div>
+						<input ref={this.myRef} type="text" placeholder="點擊按鈕提示數據"/>&nbsp;
+						<button onClick={this.showData}>點我提示左側的數據</button>&nbsp;
+						<input onBlur={this.showData2} type="text" placeholder="失去焦點提示數據"/>&nbsp;
+					</div>
+				)
+			}
+		}
+		//渲染組件到頁面
+		ReactDOM.render(<Demo a="1" b="2"/>,document.getElementById('test'))
+	</script>
+</body>
+</html>

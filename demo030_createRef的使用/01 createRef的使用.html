@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>4_createRef</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //創建組件
+      class Demo extends React.Component {
+        /* 
+				React.createRef調用後可以返回一個容器，該容器可以存儲被ref所標識的節點,該容器是“專人專用”的
+        前者宣告的React.createRef()會被後者覆蓋
+			 */
+        myRef = React.createRef(); //表示React創建了一個容器掛在組件的實例化對象上
+        myRef2 = React.createRef();
+
+        //展示左側輸入框的數據
+        showData = () => {
+          alert(this.myRef.current.value);
+        };
+
+        //展示右側輸入框的數據
+        showData2 = () => {
+          alert(this.myRef2.current.value);
+        };
+
+        render() {
+          return (
+            <div>
+              {/**
+               * <input ref={this.myRef} ../>
+               * 表示從實例對象中獲取myRef屬性
+               * 說明:
+               * 1. 當渲染過程中發現ref={this.myRef}是透過React.createRef()創建的容器
+               * 2. React會把ref當前所在的節點存到this.myRef這個容器中
+               */}
+              <input
+                ref={this.myRef}
+                type="text"
+                placeholder="點擊按鈕提示數據"
+              />
+              &nbsp;
+              <button onClick={this.showData}>點我提示左側的數據</button>&nbsp;
+              <input
+                onBlur={this.showData2}
+                ref={this.myRef2}
+                type="text"
+                placeholder="失去焦點提示數據"
+              />
+              &nbsp;
+            </div>
+          );
+        }
+      }
+      //渲染組件到頁面
+      ReactDOM.render(<Demo a="1" b="2" />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
