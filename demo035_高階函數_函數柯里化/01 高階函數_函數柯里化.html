@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>高階函數_函數柯里化</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //#region
+      /* 
+					高階函數：如果一個函數符合下面2個規範中的任何一個，那該函數就是高階函數。
+									1.若A函數，接收的參數是一個函數，那麽A就可以稱之為高階函數。
+									2.若A函數，調用的返回值依然是一個函數，那麽A就可以稱之為高階函數。
+									常見的高階函數有：Promise、setTimeout、arr.map()等等
+
+					函數的柯里化：通過函數調用繼續返回函數的方式，實現多次接收參數最後統一處理的函數編碼形式。 
+						function sum(a){
+							return(b)=>{
+								return (c)=>{
+									return a+b+c
+								}
+							}
+						}
+					*/
+      //#endregion
+      //創建組件
+      class Login extends React.Component {
+        //初始化狀態
+        state = {
+          username: "", //用戶名
+          password: "", //密碼
+        };
+
+        /**
+         * 需求:將實現相同功能的函數整合成一個函數處理
+         * 1. 事件需傳入回調函數
+         * 2. 回調函數被React調用時傳入實參用來辨別當前是哪一個輸入類的標籤
+         *
+         * 因為要實現第二點導致回調函數寫法是:this.saveFormData(實參)
+         * 此時當頁面第一次渲染時回調函數會被執行且默認return undifined
+         * 所以透過此特性，將一個函數做為return內容
+         * 渲染完後，每次觸發標籤事件return時，React就會默認傳入event實參，也就可以透過target取得當前執行的標籤對象
+         *
+         * 為了將不同標籤事件所獲取到的數入內容存到state中，事件的回調函數傳入辨別的實參(this.saveFormData("username"))
+         * 而要將變數當作對象的屬性賦值需要用方括弧表示，不能直接使用或加引號
+         *
+         * 以下對象中的屬性會是dataType名稱而不是dataType變數中存的值
+         *  this.setState({ dataType: event.target.value });
+         *  this.setState({ "dataType": event.target.value });
+         */
+
+        //保存表單數據到狀態中
+        saveFormData = (dataType) => {
+          // console.log(dataType);
+          return (event) => {
+            this.setState({ [dataType]: event.target.value });
+          };
+        };
+
+        //表單提交的回調
+        handleSubmit = (event) => {
+          event.preventDefault(); //阻止表單提交
+          const { username, password } = this.state;
+          alert(`你輸入的用戶名是：${username},你輸入的密碼是：${password}`);
+        };
+
+        render() {
+          return (
+            <form onSubmit={this.handleSubmit}>
+              用戶名：
+              <input
+                onChange={this.saveFormData("username")}
+                type="text"
+                name="username"
+              />
+              密碼：
+              <input
+                onChange={this.saveFormData("password")}
+                type="password"
+                name="password"
+              />
+              <button>登錄</button>
+            </form>
+          );
+        }
+      }
+      //渲染組件
+      ReactDOM.render(<Login />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
