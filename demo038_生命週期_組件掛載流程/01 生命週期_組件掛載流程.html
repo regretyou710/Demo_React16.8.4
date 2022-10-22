@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>1_引出生命周期</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //創建組件
+      class Count extends React.Component {
+        //構造器
+        constructor(props) {
+          console.log("Count---constructor");
+          super(props);
+          //初始化狀態
+          this.state = { count: 0 };
+        }
+
+        //加1按鈕的回調
+        add = () => {
+          //獲取原狀態
+          const { count } = this.state;
+          //更新狀態
+          this.setState({ count: count + 1 });
+        };
+
+        //組件將要掛載的鉤子
+        componentWillMount() {
+          console.log("Count---componentWillMount");
+        }
+
+        //組件掛載完畢的鉤子
+        componentDidMount() {
+          console.log("Count---componentDidMount");
+        }
+
+        render() {
+          console.log("Count---render");
+          const { count } = this.state;
+          return (
+            <div>
+              <h1>當前求和為:{count}</h1>
+              <button onClick={this.add}>點我+1</button>
+            </div>
+          );
+        }
+      }
+
+      //渲染組件
+      ReactDOM.render(<Count />, document.getElementById("test"));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>1_引出生命周期</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //創建組件
+      //生命周期回調函數 <=> 生命周期鉤子函數 <=> 生命周期函數 <=> 生命周期鉤子
+      class Life extends React.Component {
+        state = { opacity: 1 };
+
+        death = () => {
+          // 除了可以寫在組件卸載前也可以寫在此處
+          // clearInterval(this.timer);
+
+          //卸載組件
+          ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+        };
+
+        //組件掛載完畢
+        componentDidMount() {
+          console.log("componentDidMount");
+          this.timer = setInterval(() => {
+            //獲取原狀態
+            let { opacity } = this.state;
+            //減小0.1
+            opacity -= 0.1;
+            if (opacity <= 0) opacity = 1;
+
+            //設置新的透明度
+            //this.setState({ opacity: opacity });
+            this.setState({ opacity });//對象的鍵和值相同時可以使用簡寫
+          }, 200);
+        }
+
+        //組件將要卸載
+        componentWillUnmount() {
+          //清除定時器
+          clearInterval(this.timer);
+        }
+
+        //初始化渲染、狀態更新之後
+        render() {
+          console.log("render");
+          return (
+            <div>
+              <h2 style={{ opacity: this.state.opacity }}>
+                React學不會怎麽辦？
+              </h2>
+              <button onClick={this.death}>不活了</button>
+            </div>
+          );
+        }
+      }
+      //渲染組件
+      ReactDOM.render(<Life />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
