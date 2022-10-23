@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      //#region
+      //創建組件
+      class Count extends React.Component {
+        //構造器
+        constructor(props) {
+          console.log("Count---constructor");
+          super(props);
+          //初始化狀態
+          this.state = { count: 0 };
+        }
+
+        //加1按鈕的回調
+        add = () => {
+          //獲取原狀態
+          const { count } = this.state;
+          //更新狀態
+          this.setState({ count: count + 1 });
+        };
+
+        //組件卸載按鈕的回調
+        death = () => {
+          ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+        };
+
+        //強制更新按鈕的回調
+        force = () => {
+          //不受shouldComponentUpdate方法控制的影響
+          this.forceUpdate();
+        };
+
+        //組件將要掛載的鉤子
+        componentWillMount() {
+          console.log("Count---componentWillMount");
+        }
+
+        render() {
+          console.log("Count---render");
+          const { count } = this.state;
+          return (
+            <div>
+              <h1>當前求和為:{count}</h1>
+              <button onClick={this.add}>點我+1</button>
+              <button onClick={this.death}>組件卸載</button>
+              <button onClick={this.force}>
+                不更新任何狀態中的數據，強制更新一下
+              </button>
+            </div>
+          );
+        }
+
+        //組件掛載完畢的鉤子
+        componentDidMount() {
+          console.log("Count---componentDidMount");
+        }
+
+        //組件將要卸載
+        componentWillUnmount() {
+          console.log("Count---componentWillUnmount");
+        }
+
+        //控制組件更新的"閥門"
+        //如果不寫shouldComponentUpdate方法React底層會默認產生一個返回true的shouldComponentUpdate方法
+        //如果自己寫shouldComponentUpdate方法就要求必須回傳布林值
+        shouldComponentUpdate() {
+          console.log("Count---shouldComponentUpdate");
+          return false;
+        }
+
+        //組件將要更新的鉤子
+        componentWillUpdate() {
+          console.log("Count---componentWillUpdate");
+        }
+
+        //組件更新完畢的鉤子
+        componentDidUpdate() {
+          console.log("Count---componentDidUpdate");
+        }
+      }
+      //#endregion
+
+      //父組件(A組件裡面引用B組件)
+      class A extends React.Component {
+        //初始化狀態
+        state = { carName: "奔馳" };
+
+        changeCar = () => {
+          this.setState({ carName: "奧拓" });
+        };
+
+        render() {
+          return (
+            <div>
+              <div>我是A組件</div>
+              <button onClick={this.changeCar}>換車</button>
+
+              {
+                //將A組件換車的結果由B組件展示
+              }
+              <B carName={this.state.carName} />
+            </div>
+          );
+        }
+      }
+
+      //子組件
+      class B extends React.Component {
+        //組件將要接收新的props的鉤子
+        componentWillReceiveProps(props) {
+          /**
+           * 頁面第一次渲染時componentWillReceiveProps鉤子不會被React調用
+           * 但確實有接收到從父組件傳遞過來的屬性
+           * 直到父組件執行了狀態更新，調用父組件的render方法
+           * 因為在父組件render時父組件有對子組件重新渲染並傳遞屬性給子組件
+           * 所子組件在重新render前，componentWillReceiveProps鉤子會被React調用
+           */
+          console.log("B---componentWillReceiveProps", props);
+        }
+
+        //控制組件更新的"閥門"
+        shouldComponentUpdate() {
+          console.log("B---shouldComponentUpdate");
+          return true;
+        }
+
+        //組件將要更新的鉤子
+        componentWillUpdate() {
+          console.log("B---componentWillUpdate");
+        }
+
+        render() {
+          //console.log(this);
+          console.log("B---render");
+          return <div>我是B組件，接收到的車是:{this.props.carName}</div>;
+        }
+
+        //組件更新完畢的鉤子
+        componentDidUpdate() {
+          console.log("B---componentDidUpdate");
+        }
+      }
+
+      //渲染組件
+      ReactDOM.render(<A />, document.getElementById("test"));
+    </script>
+  </body>
+</html>

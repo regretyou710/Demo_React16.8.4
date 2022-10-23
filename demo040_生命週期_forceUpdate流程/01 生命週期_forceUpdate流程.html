@@ -37,6 +37,17 @@
           this.setState({ count: count + 1 });
         };
 
+        //組件卸載按鈕的回調
+        death = () => {
+          ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+        };
+
+        //強制更新按鈕的回調
+        force = () => {
+          //不受shouldComponentUpdate方法控制的影響
+          this.forceUpdate();
+        };
+
         //組件將要掛載的鉤子
         componentWillMount() {
           console.log("Count---componentWillMount");
@@ -49,6 +60,10 @@
             <div>
               <h1>當前求和為:{count}</h1>
               <button onClick={this.add}>點我+1</button>
+              <button onClick={this.death}>組件卸載</button>
+              <button onClick={this.force}>
+                不更新任何狀態中的數據，強制更新一下
+              </button>
             </div>
           );
         }
@@ -56,6 +71,29 @@
         //組件掛載完畢的鉤子
         componentDidMount() {
           console.log("Count---componentDidMount");
+        }
+
+        //組件將要卸載
+        componentWillUnmount() {
+          console.log("Count---componentWillUnmount");
+        }
+
+        //控制組件更新的"閥門"
+        //如果不寫shouldComponentUpdate方法React底層會默認產生一個返回true的shouldComponentUpdate方法
+        //如果自己寫shouldComponentUpdate方法就要求必須回傳布林值
+        shouldComponentUpdate() {
+          console.log("Count---shouldComponentUpdate");
+          return false;
+        }
+
+        //組件將要更新的鉤子
+        componentWillUpdate() {
+          console.log("Count---componentWillUpdate");
+        }
+
+        //組件更新完畢的鉤子
+        componentDidUpdate() {
+          console.log("Count---componentDidUpdate");
         }
       }
 
