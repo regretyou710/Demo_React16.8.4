@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>4_getSnapShotBeforeUpdate的使用場景</title>
+    <style>
+      .list {
+        width: 200px;
+        height: 150px;
+        background-color: skyblue;
+        overflow: auto;
+      }
+      .news {
+        height: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script
+      type="text/javascript"
+      src="../js/17.0.1/react.development.js"
+    ></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/17.0.1/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+      class NewsList extends React.Component {
+        state = { newsArr: [] };
+
+        getListContainer = (currentNode) => {
+          this.listContainer = currentNode;
+        };
+
+        render() {
+          return (
+            <div className="list" ref={this.getListContainer}>
+              {this.state.newsArr.map((element, index) => {
+                return (
+                  <div className="news" key={index}>
+                    {element}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        }
+
+        componentDidMount() {
+          setInterval(() => {
+            //獲取原狀態
+            const { newsArr } = this.state;
+            //模擬一條新聞
+            const news = "新聞" + (newsArr.length + 1);
+            //更新狀態
+            this.setState({ newsArr: [news, ...newsArr] });
+          }, 500);
+        }
+
+        getSnapshotBeforeUpdate() {
+          return this.listContainer.scrollHeight;
+        }
+
+        componentDidUpdate(preProps, preState, snapshot) {
+          this.listContainer.scrollTop +=
+            this.listContainer.scrollHeight - snapshot;
+        }
+      }
+
+      ReactDOM.render(<NewsList />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
