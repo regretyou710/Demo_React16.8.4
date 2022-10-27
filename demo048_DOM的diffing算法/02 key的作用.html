@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script
+      type="text/javascript"
+      src="../js/17.0.1/react.development.js"
+    ></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/17.0.1/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+      /*
+   經典面試題:
+      1). react/vue中的key有什麽作用？（key的內部原理是什麽？）
+      2). 為什麽遍歷列表時，key最好不要用index?
+      
+			1. 虛擬DOM中key的作用：
+					1). 簡單的說: key是虛擬DOM對象的標識, 在更新顯示時key起著極其重要的作用。
+
+					2). 詳細的說: 當狀態中的數據發生變化時，react會根據【新數據】生成【新的虛擬DOM】, 
+												隨後React進行【新虛擬DOM】與【舊虛擬DOM】的diff比較，比較規則如下：
+
+									a. 舊虛擬DOM中找到了與新虛擬DOM相同的key：
+												(1).若虛擬DOM中內容沒變, 直接使用之前的真實DOM
+												(2).若虛擬DOM中內容變了, 則生成新的真實DOM，隨後替換掉頁面中之前的真實DOM
+
+									b. 舊虛擬DOM中未找到與新虛擬DOM相同的key
+												根據數據創建新的真實DOM，隨後渲染到到頁面
+									
+			2. 用index作為key可能會引發的問題：
+								1. 若對數據進行：逆序添加、逆序刪除等破壞順序操作:
+												會產生沒有必要的真實DOM更新 ==> 界面效果沒問題, 但效率低。
+
+								2. 如果結構中還包含輸入類的DOM：
+												會產生錯誤DOM更新 ==> 界面有問題。
+												
+								3. 注意！如果不存在對數據的逆序添加、逆序刪除等破壞順序操作，
+									僅用於渲染列表用於展示，使用index作為key是沒有問題的。
+					
+			3. 開發中如何選擇key?:
+								1.最好使用每條數據的唯一標識作為key, 比如id、手機號、身份證號、學號等唯一值。
+								2.如果確定只是簡單的展示數據，用index也是可以的。
+   */
+      /* 
+		慢動作回放----使用index索引值作為key
+
+			初始數據：
+					{id:1,name:'小張',age:18},
+					{id:2,name:'小李',age:19},
+			初始的虛擬DOM：
+					<li key=0>小張---18</li>
+					<li key=1>小李---19</li>
+
+			更新後的數據：
+					{id:3,name:'小王',age:20},
+					{id:1,name:'小張',age:18},
+					{id:2,name:'小李',age:19},
+			更新數據後的虛擬DOM：
+					<li key=0>小王---20</li>
+					<li key=1>小張---18</li>
+					<li key=2>小李---19</li>
+
+	-----------------------------------------------------------------
+
+	慢動作回放----使用id唯一標識作為key
+
+			初始數據：
+					{id:1,name:'小張',age:18},
+					{id:2,name:'小李',age:19},
+			初始的虛擬DOM：
+					<li key=1>小張---18</li>
+					<li key=2>小李---19</li>
+
+			更新後的數據：
+					{id:3,name:'小王',age:20},
+					{id:1,name:'小張',age:18},
+					{id:2,name:'小李',age:19},
+			更新數據後的虛擬DOM：
+					<li key=3>小王---20</li>
+					<li key=1>小張---18</li>
+					<li key=2>小李---19</li>
+	 */
+
+      class Person extends React.Component {
+        state = {
+          persons: [
+            { id: 1, name: "小張", age: 18 },
+            { id: 2, name: "小李", age: 19 },
+          ],
+        };
+
+        add = () => {
+          const { persons } = this.state;
+          const p = { id: persons.length + 1, name: "小王", age: 20 };
+          this.setState({ persons: [p, ...persons] });
+        };
+
+        render() {
+          return (
+            <div>
+              <h2>展示人員訊息</h2>
+              <button onClick={this.add}>添加一個小王</button>
+              <h3>使用index（索引值）作為key</h3>
+              <ul>
+                {this.state.persons.map((element, index) => {
+                  return (
+                    <li key={index}>
+                      {element.name}---{element.age}
+                    </li>
+                  );
+                })}
+              </ul>
+              <hr />
+              <hr />
+              <h3>使用id（數據的唯一標識）作為key</h3>
+              <ul>
+                {this.state.persons.map((element) => {
+                  return (
+                    <li key={element.id}>
+                      {element.name}---{element.age}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<Person />, document.getElementById("test"));
+    </script>
+  </body>
+</html>

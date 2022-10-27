@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>驗證diff算法</title>
+  </head>
+  <body>
+    <!-- 準備好一個“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心庫 -->
+    <script
+      type="text/javascript"
+      src="../js/17.0.1/react.development.js"
+    ></script>
+    <!-- 引入react-dom，用於支持react操作DOM -->
+    <script
+      type="text/javascript"
+      src="../js/17.0.1/react-dom.development.js"
+    ></script>
+    <!-- 引入babel，用於將jsx轉為js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+      class Time extends React.Component {
+        state = { date: new Date() };
+
+        componentDidMount() {
+          setInterval(() => {
+            this.setState({
+              date: new Date(),
+            });
+          }, 1000);
+        }
+
+        render() {
+          return (
+            <div>
+              <h1>hello</h1>
+              <input type="text" />
+              {/*
+            狀態改變所在的節點才會進行新舊虛擬DOM的比較，狀態所在的節點裡面的input標籤也會進行新舊虛擬DOM的比較
+            */}
+              <span>
+                現在是：{this.state.date.toTimeString()}
+                <input type="text" />
+              </span>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<Time />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
