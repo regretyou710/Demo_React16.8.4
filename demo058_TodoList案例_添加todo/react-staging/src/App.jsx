@@ -15,13 +15,26 @@ export default class App extends Component {
     ],
   };
 
+  //自定義函數在賦值給子組件屬性，透過子組件調用父組件函數傳遞實參，父組件接收到後更改狀態內容
+  //addTodo用於添加一個todo，接收的參數是todo對象
+  addTodo = (todoObj) => {
+    //獲取原todos
+    const { todos } = this.state;
+
+    //追加一個todo
+    const newTodos = [todoObj, ...todos];
+    
+    //更新狀態
+    this.setState({ todos: newTodos });
+  };
+
   render() {
     const { todos } = this.state;
 
     return (
       <div className="todo-container">
         <div className="todo-wrap">
-          <Header />
+          <Header addTodo={this.addTodo} />
           <List todos={todos} />
           <Footer />
         </div>
