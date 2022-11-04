@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      //連續解構賦值
+      let obj1 = { a: { b: { c: 1 } } };
+      console.log(obj1.a.b.c);
+
+      const {
+        a: {
+          b: { c },
+        },
+      } = obj1;
+      console.log(c);
+
+      //解構賦值別名
+      let obj2 = { a: { b: 2 } };
+      const {
+        a: { b: data },
+      } = obj2;
+      console.log(data);
+    </script>
+  </body>
+</html>
