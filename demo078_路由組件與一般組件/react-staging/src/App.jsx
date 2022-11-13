@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link, Route } from "react-router-dom";
-import About from "./components/About";
-import Home from "./components/Home";
+import About from "./pages/About"; //About是路由組件
+import Home from "./pages/Home"; //Home是路由組件
+import Header from "./components/Header"; //Header是一般組件
 
 export default class App extends Component {
   render() {
@@ -10,7 +11,7 @@ export default class App extends Component {
         <div className="row">
           <div className="col-xs-offset-2 col-xs-8">
             <div className="page-header">
-              <h2>React Router Demo</h2>
+              <Header />
             </div>
           </div>
         </div>
@@ -26,8 +27,12 @@ export default class App extends Component {
               </a> */}
 
               {/* 在React中靠路由鏈結實現切換組件--編寫路由鏈結 */}
-              <Link className="list-group-item" to="/about">About</Link>
-              <Link className="list-group-item " to="/home">Home</Link>
+              <Link className="list-group-item" to="/about">
+                About
+              </Link>
+              <Link className="list-group-item " to="/home">
+                Home
+              </Link>
             </div>
           </div>
           <div className="col-xs-6">
