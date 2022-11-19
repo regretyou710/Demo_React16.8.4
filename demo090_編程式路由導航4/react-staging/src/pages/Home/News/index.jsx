@@ -10,4 +10,10 @@ export default class News extends Component {
       </ul>
     );
   }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.history.push('/home/message')
+    }, 1000);
+  }
 }
