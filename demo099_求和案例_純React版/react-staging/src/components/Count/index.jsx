@@ -3,6 +3,7 @@ import React, { Component } from "react";
 export default class Count extends Component {
   state = { count: 0 };
 
+  // 加法
   increment = () => {
     const { value } = this.selectNumber;
     const { count } = this.state;
@@ -10,18 +11,21 @@ export default class Count extends Component {
     this.setState({ count: count + value * 1 }); //強制轉型
   };
 
+  // 減法
   decrement = () => {
     const { value } = this.selectNumber;
     const { count } = this.state;
     this.setState({ count: count - value * 1 });
   };
 
+  // 奇數再加
   incrementOfOdd = () => {
     const { value } = this.selectNumber;
     const { count } = this.state;
     if (count % 2 !== 0) this.setState({ count: count + value * 1 });
   };
 
+  // 異步加
   incrementAsync = () => {
     const { value } = this.selectNumber;
     const { count } = this.state;
