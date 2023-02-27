@@ -14,7 +14,7 @@ export const createIncrementAsyncAction = (data, time) => {
   //     setTimeout(() => {
   //       //第一次由Count組件透過store.dispatch傳入action後等待
   //       //時間到後，再一次調用store.dispatch傳入action執行reducer並返回結果
-  //       store.dispatch(createIncrementAction(data));
+  //       store.dispatch(cerateIncrementAction(data));
   //     }, time);
   //   };
 

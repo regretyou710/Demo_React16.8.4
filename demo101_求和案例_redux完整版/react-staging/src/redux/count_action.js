@@ -3,5 +3,5 @@
 */
 import { INCREMENT, DECREMENT } from "./constant";
 
-export const cerateIncrementAction = (data) => ({ type: INCREMENT, data });
-export const cerateDecrementAction = (data) => ({ type: DECREMENT, data });
+export const createIncrementAction = (data) => ({ type: INCREMENT, data });
+export const createDecrementAction = (data) => ({ type: DECREMENT, data });

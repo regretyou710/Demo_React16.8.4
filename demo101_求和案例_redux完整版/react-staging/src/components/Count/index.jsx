@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import store from "../../redux/store";
 //引入actionCreator，專門用於創建action對象
 import {
-  cerateIncrementAction,
-  cerateDecrementAction,
+  createIncrementAction,
+  createDecrementAction,
 } from "../../redux/count_action";
 
 export default class Count extends Component {
@@ -13,27 +13,27 @@ export default class Count extends Component {
   // 加法
   increment = () => {
     const { value } = this.selectNumber;
-    store.dispatch(cerateIncrementAction(value * 1));
+    store.dispatch(createIncrementAction(value * 1));
   };
 
   // 減法
   decrement = () => {
     const { value } = this.selectNumber;
-    store.dispatch(cerateDecrementAction(value * 1));
+    store.dispatch(createDecrementAction(value * 1));
   };
 
   // 奇數再加
   incrementOfOdd = () => {
     const { value } = this.selectNumber;
     const count = store.getState();
-    if (count % 2 !== 0) store.dispatch(cerateIncrementAction(value * 1));
+    if (count % 2 !== 0) store.dispatch(createIncrementAction(value * 1));
   };
 
   // 異步加
   incrementAsync = () => {
     const { value } = this.selectNumber;
     setTimeout(() => {
-      store.dispatch(cerateIncrementAction(value * 1));
+      store.dispatch(createIncrementAction(value * 1));
     }, 500);
   };
 
