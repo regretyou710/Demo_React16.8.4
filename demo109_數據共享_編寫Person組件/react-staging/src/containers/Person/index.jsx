@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class index extends Component {
+export default class Person extends Component {
   handleAge = (currentNode) => {
     this.ageNode = currentNode;
   };
