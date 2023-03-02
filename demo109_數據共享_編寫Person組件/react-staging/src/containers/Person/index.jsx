@@ -7,7 +7,7 @@ export default class Person extends Component {
 
   addPerson = () => {
     const name = this.nameNode.value;
-    const age = this.ageNode.value;
+    const age = this.ageNode.value * 1; // 轉型
     console.log(name, age);
   };
 

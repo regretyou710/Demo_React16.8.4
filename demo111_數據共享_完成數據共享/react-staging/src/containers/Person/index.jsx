@@ -10,7 +10,7 @@ class Person extends Component {
 
   addPerson = () => {
     const name = this.nameNode.value;
-    const age = this.ageNode.value;
+    const age = this.ageNode.value * 1; // 轉型
     const personObj = { id: nanoid(), name, age };
     // console.log(personObj);
     this.props.addPerson(personObj);
