@@ -11,5 +11,5 @@ import { createRoot } from "react-dom/client";
 // ReactDOM.render(<App />, document.getElementById("root"));
 
 // React 18版本寫法
-//createRoot(document.getElementById("root")).render(<App />);
-createRoot(document.getElementById("root")).render(<App />);
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
